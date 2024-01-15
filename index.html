@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Prototype techniques</title>
+	<link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700;800&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://unpkg.com/intersection-observer"></script>
+	<script src="https://unpkg.com/scrollama"></script>
+</head>
+<style type="text/css">
+	body, html {
+		top:0;
+		left:0;
+		margin:0;
+		font-family:'Helvetica Neue', sans-serif;
+	}
+	nav	{
+		background-color:white;
+		position:fixed;
+		width:100%;
+		display:flex;
+		justify-content: center;
+		align-items:center;
+		border-bottom:0.05em solid black;
+		z-index:100;
+	}
+	.title {
+		height:50vh;
+		color:white;
+		background-color:black;
+/*		background-image:url('https://i.pinimg.com/originals/7f/43/1c/7f431c9e6991b1a83d79e359dc09c99d.gif');*/
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-position: left top;
+		background-size: auto 100%;
+	}
+	.title h1 {
+		font-size:5em;
+	}
+	.title h2 {
+		font-size:1em;
+		font-weight:400;
+	}
+	.header {
+		text-align:center;
+		display:flex;
+		justify-content:center;
+		align-items:center;
+		border:0.5em solid black;
+		padding:5% 0%;
+		animation: fadeIn 0.5s ease-in-out;
+	}
+	.header h1{
+		font-family:'Helvetica Neue', sans-serif;
+		font-weight:800;
+		margin:0;
+	}
+	.header h2 {
+		margin:0;
+	}
+	.sticky {
+		float:right;
+		top:25%;
+		position:sticky;
+		width:50%;
+		display:inline-flex;
+					background-color:white;
+	}
+	.leftside{
+		background-color:black;
+		color:white;
+		width: 30%;
+    	padding: 5% 10% 5% 5%;
+	}
+	.progressive{
+		width:100%;
+		display:block;
+		margin-bottom:100%!important;
+	}
+	.end {
+		margin-bottom:5%!important;
+	}
+	#counter {
+		width:100%;
+		font-size:10em;
+		text-align:center;
+		margin:0;
+		padding:0%;
+		line-height:1em;
+		font-weight: 800;
+    	letter-spacing: -0.05em;
+	}
+	#counter h2{
+		text-align:center;
+	}
+	.text {
+		margin:5%;
+		line-height:2em;
+		opacity:0;
+		margin-top:10%;
+		transition:0.5s ease-in-out;
+	}
+	.text h1 {
+		font-size:4em;
+		letter-spacing:-0.05em;
+		line-height:1em;
+		font-weight:900;
+		width:60%;
+	}
+	.text h2 {
+		font-weight:400;
+		font-size:1em;
+		font-style:italic;
+	}
+	.sticky h1 {
+		width:100%;
+		font-size:3em;
+	}
+	.sticky h2 {
+		font-size:0.8em;
+		text-transform:uppercase;
+		letter-spacing:0.1em;
+	}
+	.center_aligner {
+		overflow:none;
+		width:100%;
+		display:flex;
+		align-items:center;
+		justify-content:center;
+		margin:2% 0%;
+	}
+	iframe {
+		border:0.5em solid black;
+		width:900px;
+		height:500px;
+	}
+	.tableauPlaceholder{
+		width:50%;
+		z-index:0;
+	}
+	img{
+		text-align:center;
+		margin:0%;
+		display:inline-block;
+		border:0.5em CadetBlue;
+	}
+	.caption {
+		font-size:0.8em;
+		color:#666666;
+	}
+	.small {
+		width:30%;
+	}
+	.large {
+		width:80%;
+		display:block;
+	}
+	@keyframes fadeIn {
+		0%{
+			opacity:0;
+		}
+		100%{
+			opacity:1;
+		}
+	}
+	@media screen and (max-width:767px){
+		.sticky {
+	/*		bottom:0;*/
+			width:50%;
+			float:none;
+			margin:auto;
+			display:flex;
+			line-height:2em;
+		}
+		.sticky h1 {
+			font-size:2em;
+			line-height:2em;
+		}
+		.sticky h2 {
+			font-size:0.5em;
+		}
+		#counter {
+			font-size:5em;
+		}
+		.leftside {
+			width: 85%;
+    		padding: 5% 10% 5% 5%;
+		}
+		.small {
+			width:80%;
+		}
+		.title {
+			height:80vh;
+		}
+		.text h1 {
+			font-size:2.5em;
+			width:80%;
+		}
+		.text {
+			margin:10% 5%;
+		}
+		iframe {
+			height:300px;
+		}
+
+	}
+</style>
+<body>
+
+<!-- nav -->
+<nav>
+	<h3>A Global Health Story</h3>
+</nav>
+
+<!-- text -->
+<div class='header title step'>
+	<div class='aligner'>
+		<h1>Are all Health Risks Equal?</h1>
+		<h2>Country differences in the Risk for Cardiovascular Disease</h2>	
+	</div>
+</div>
+
+
+<div class='text'>
+	<h2>by Catherine DiMare-D'Souza</h2>	
+</div>
+
+<div class='text'>
+	<h1>What is the leading cause of death in the world?</h1>
+	Cardiovascular disease (CVD), which includes coronary heart disease, stroke, and congestive heart failure, by far kills more people around the world than any other disease. CVD is responsible globally for one-third of all deaths.
+</div>
+<iframe src='https://flo.uri.sh/visualisation/15901440/embed' title='Interactive or visual content' class='flourish-embed-iframe' frameborder='0' scrolling='no' style='width:100%;height:600px;' sandbox='allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'></iframe><div style='width:100%!;margin-top:4px!important;text-align:right!important;'><a class='flourish-credit' href='https://public.flourish.studio/visualisation/15901440/?utm_source=embed&utm_campaign=visualisation/15901440' target='_top' style='text-decoration:none!important'> </a></div>
+<div class='caption'>Measured in millions. Data source: IHME, Global Burden of Disease (2019). OurWorldInData.org/causes-of-death</div>	
+</div>
+
+
+<div class='text'>
+	<h1>Are all countries the same?</h1>
+	Although CVD is the leading cause of death globally, some countries have a much higher death rate than others. Most of the countries with the highest death rate from the disease have remained at the top for the last three decades. 
+</div>
+
+<!-- tableau public -->
+<div class='center_aligner'>
+	<!-- insert tableau public embed link below this line -->
+	<div class='tableauPlaceholder' id='viz1702398396133' style='position: relative'><noscript><a href='#'><img alt='CVD Leaders ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CV&#47;CVDDeaths_17020803935950&#47;CVDLeaders&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='CVDDeaths_17020803935950&#47;CVDLeaders' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CV&#47;CVDDeaths_17020803935950&#47;CVDLeaders&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1702398396133');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1024px';vizElement.style.height='795px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1024px';vizElement.style.height='795px';} else { vizElement.style.width='100%';vizElement.style.height='1177px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);               </script>
+</div>
+
+<div class='text'>
+	<h1>What causes CVD?</h1>
+	In order to understand what may cause some countries to have a higher CVD death rate than others, we have to understand the risk factors that contribute to CVD. Hypertension, or high blood pressure (>120/80 mmHg), is the leading cause of CVD. Elevated blood pressure damages the arteries that supply blood to the heart, causing cholesterol to accumulate and thicken the blood vessel walls. Although the global rate has declined since 1990, individual countries continue to see increases in excess of the global average.
+</div>
+
+<!-- interactive embed, dashboard CVD Risk --> 
+<div class='center_aligner'>
+	<div class='tableauPlaceholder' id='viz1705175719376' style='position: relative'><noscript><a href='#'><img alt='CVD Risk ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CV&#47;CVDDeaths_17020803935950&#47;CVDRisk&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='CVDDeaths_17020803935950&#47;CVDRisk' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CV&#47;CVDDeaths_17020803935950&#47;CVDRisk&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1705175719376');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+</div>
+
+<div class='text'>
+	<h1>Are all risk factors equal?</h1>
+	 Countries with the highest CVD death rates also consistantly have some of the highest death rates from hypertension, high cholesterol, diabetes and obesity, with Uzbekistan leading the world for these top four risk factors. Although some countries with higher CVD death rates not not have equally high HBP death rates (Micronesia #11 CVD/#31 HBP; Kiribati #13 CVD/#37 HBP), most rank higher in death rates for at least two other risk factors.     
+	</div>
+	<div class='center_aligner'>
+	 <div class='tableauPlaceholder' id='viz1705256478689' style='position: relative'><noscript><a href='#'><img alt='Risk Ranking ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CV&#47;CVDDeaths_17020803935950&#47;RiskRanking&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='CVDDeaths_17020803935950&#47;RiskRanking' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CV&#47;CVDDeaths_17020803935950&#47;RiskRanking&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1705256478689');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else { vizElement.style.width='100%';vizElement.style.height='827px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+</div>
+
+<div class='text'>
+	<h1>How do CVD risks affect each other?</h1>
+	A person can be exposed to multiple overlapping risk factors over their lifetime. <a href='https://ourworldindata.org/how-do-researchers-estimate-the-death-toll-caused-by-each-risk-factor-whether-its-smoking-obesity-or-air-pollution'> </a>Death rates from each risk <a href='https://ourworldindata.org/why-isnt-it-possible-to-sum-up-the-deaths-from-different-risk-factors'> cannot be added together</a> but can be grouped as "Disease Risks" (HBP, diabetes, cholesterol, obesity, kidney dysfunction), and "Modifiable Risks" which can be altered by lifestyle changes in a person's behavior (smoking, alcohol, exercise) and diet (salt, fat intake, sugar consumption). Modifiable risks contribute directly to each of the highest disease risk factors for CVD. 
+	</div>
+	<iframe src='https://flo.uri.sh/visualisation/16136345/embed' title='Interactive or visual content' class='flourish-embed-iframe' frameborder='0' scrolling='no' style='width:100%;height:600px;' sandbox='allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'></iframe><div style='width:100%!;margin-top:4px!important;text-align:right!important;'><a class='flourish-credit' href='https://public.flourish.studio/visualisation/16136345/?utm_source=embed&utm_campaign=visualisation/16136345' target='_top' style='text-decoration:none!important'><img alt='Made with Flourish' src='https://public.flourish.studio/resources/made_with_flourish.svg' style='width:105px!important;height:16px!important;border:none!important;margin:0!important;'> </a></div>
+</div>
+
+
+<div class='text'>
+	<h1>So which risks are the most critical to reduce CVD?</h1>
+	The relationship between all CVD risk factors can be reduced to human behavior and the choices people make with their health. The direct contribution of diet and exercise to all other high risk factors for CVD means that everyone has the ability to reduce their risk by making lifestyle changes.
+</div>
+
+
+<!-- counter -->
+<div class='header sticky step' id='dynamic_sticky1'>
+</div>
+
+
+<div class='leftside'>
+
+	<div class='text progressive'>
+	<h1>Hypertension</h1>
+	High blood pressure (HBP) damages the arteries that supply blood to the heart, causing cholesterol to accumulate and thicken the blood vessel walls.  
+
+	<h1>High Cholesterol</h1>
+	An optimal level of "bad" cholesterol (non-High Density Lipoprotein/all artery-clogging lipoproteins including Low-Density Lipoproteins [LDL], very-low-density lipoprotein [VLDL] and intermediate-density lipoprotein [IDL]) is less than 130 mg/dL.  Higher numbers mean a higher risk of heart disease. 
+	</div>
+
+	<div class='text progressive end'>
+	<h1>Diabetes</h1>
+	Excess blood sugar adhers to red blood cells, which can build up and block blood vessels to the heart. 
+
+	<h1>Obesity</h1>
+	A Body Mass Index (BMI) greater than 30 is consistered obese, and contributes directly to the risk for CVD (high cholesterol, diabetes, and hypertension) by causing fat to build up in the arteries supplying blood to the heart. 
+	</div>
+
+	<div class='text progressive end'>
+	<h1>Smoking</h1>
+	Cigarette smoke retricts blood flow by causing swelling and inflammation in the cells lining the blood vessels. This leads to the formation of plaques that block blood vessels to the heart.  
+	</div> 	
+</div>
+
+</body>
+<script type="text/javascript">
+
+// instantiate the scrollama
+const scroller = scrollama();
+const scroller2 = scrollama();
+
+scroller
+  .setup({
+    step: ".text",
+    offset: 0.9,
+  })
+  .onStepEnter(response => {
+    // { element, index, direction }
+    el=response.element;
+    el.style.opacity=1;
+    el.style.marginTop='5%';    
+  })
+  .onStepExit(response => {
+    // { element, index, direction }  
+    el=response.element;
+  })
+  ;
+ // setup resize event
+window.addEventListener("resize", scroller.resize);
+
+scroller2
+  .setup({
+    step: ".progressive",
+    offset: 0.6,
+  })
+  .onStepEnter(response => {
+    // { element, index, direction }
+    el=response.element;
+    el.style.opacity=1;
+    if(response.index==0 || 1 || 2){
+    	stick('dynamic_sticky1')
+    	response.direction=='down'
+    	
+    }
+  })
+  .onStepExit(response => {
+    // { element, index, direction }  
+    el=response.element;
+    console.log(response.index)
+    if(response.index==2){
+    	unstick('dynamic_sticky1')
+    }
+    el.style.opacity=0;
+  })
+  ;
+ // setup resize event
+window.addEventListener("resize", scroller2.resize);
+
+function count(number1, number2, step, title, label, location_id, prefix='+', suffix='%'){
+	target = document.querySelector('#'+location_id)
+	console.log(target)
+	let text=number1;
+
+	setInterval(function(){
+		if(text!=number2){
+			num = text+step
+			if(num % 1 == 0){
+				text = num
+			} else {
+				text = parseFloat(num.toFixed(2))
+			}
+			target.innerHTML="<div class='aligner'><h1>"+title+"</h1><div id='counter'>"+prefix+text+suffix+"</div><h2>"+label+"</h2></div>"
+		}
+	}, 30);
+}
+
+function stick(location_id){
+	target = document.querySelector('#'+location_id)
+	target.style.position="sticky"
+}
+
+function unstick(location_id){
+	target = document.querySelector('#'+location_id)
+	target.style.position="relative"
+}
+
+</script>
+
+</html>
